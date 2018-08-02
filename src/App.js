@@ -20,6 +20,13 @@ class BooksApp extends React.Component {
       this.setState({ books })
     })
   }
+  moveShelf(book,shelf) {
+    BooksAPI.update(book, shelf).then(() => {
+      BooksAPI.getAll().then(books => {
+        this.setState({ books })
+      })
+    })
+  }
   render() {
     console.log(this.state.books[0])
     return (
@@ -28,6 +35,7 @@ class BooksApp extends React.Component {
           <SearchPage/>
         ) : (
           <ListBooks
+            onMoveShelf={(book, shelf) => this.moveShelf(book, shelf)}
             books={this.state.books}
           />
         )}
