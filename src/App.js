@@ -1,4 +1,5 @@
 import React from 'react'
+import { Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import SearchPage from './SearchPage'
 import ListBooks from './ListBooks'
@@ -14,8 +15,7 @@ class BooksApp extends React.Component {
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
-    results: [],
-    showSearchPage: false
+    results: []
   }
   componentDidMount() {
     BooksAPI.getAll().then(books => {
@@ -27,7 +27,7 @@ class BooksApp extends React.Component {
     BooksAPI.update(book, shelf).then(() => {
       BooksAPI.getAll().then(books => {
         books.sort(sortBy('authors'))
-        this.setState({ books:books, results:books })
+        this.setState({ books: books, results: books })
       })
     })
   }
@@ -51,7 +51,7 @@ class BooksApp extends React.Component {
       this.state.books.forEach(storedBook => {
         if (thisBook.id === storedBook.id) {
           thisBook.shelf = storedBook.shelf;
-        } 
+        }
       })
       if (!thisBook.shelf) {
         thisBook.shelf = 'none'
@@ -62,19 +62,20 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
-          <SearchPage
-            books={this.state.books}
-            results={this.state.results}
-            onSearch={(query) => this.searchBooks(query)}
-            onMoveShelf={(book, shelf) => this.moveShelf(book, shelf)}
-          />
-        ) : (
+          <Route exact path="/" render={() => (
             <ListBooks
               onMoveShelf={(book, shelf) => this.moveShelf(book, shelf)}
               books={this.state.books}
             />
-          )}
+          )} />
+          <Route path="/search" render={({ location }) => (
+            <SearchPage
+              books={this.state.books}
+              results={this.state.results}
+              onSearch={(query) => this.searchBooks(query)}
+              onMoveShelf={(book, shelf) => this.moveShelf(book, shelf)}
+            />
+          )} />
       </div>
     )
   }
