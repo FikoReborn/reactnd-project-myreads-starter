@@ -10,7 +10,7 @@ class SearchPage extends React.Component {
   }
   render() {
     const results = this.props.results;
-    console.log(this.props)
+    console.log(results)
     return (
       <div className="search-books">
         <div className="search-books-bar">

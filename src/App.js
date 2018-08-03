@@ -24,26 +24,43 @@ class BooksApp extends React.Component {
   moveShelf(book, shelf) {
     BooksAPI.update(book, shelf).then(() => {
       BooksAPI.getAll().then(books => {
-        this.setState({ books })
+        this.setState({ books:books, results:books })
       })
     })
   }
   searchBooks(query) {
-    if (query.replace(/\s/g,"") !== "") {
+    if (query.replace(/\s/g, "") !== "") {
       const searchQuery = query.trim();
       BooksAPI.search(searchQuery).then(result => {
-        if (!result.error) this.setState({ results:result })
-        else this.setState({results: []})
+        this.checkShelf(result)
+        this.setState({ results: result })
       })
+    } else if (this.state.results.error) {
+      this.setState({ results: [] })
     } else {
       this.setState({ results: [] })
     }
   }
+
+  checkShelf(bookResults) {
+    bookResults.map(thisBook => {
+      this.state.books.forEach(storedBook => {
+        if (thisBook.id === storedBook.id) {
+          thisBook.shelf = storedBook.shelf;
+        } 
+      })
+      if (!thisBook.shelf) {
+        thisBook.shelf = 'none'
+      }
+    })
+  }
+
   render() {
     return (
       <div className="app">
         {this.state.showSearchPage ? (
           <SearchPage
+            books={this.state.books}
             results={this.state.results}
             onSearch={(query) => this.searchBooks(query)}
             onMoveShelf={(book, shelf) => this.moveShelf(book, shelf)}
