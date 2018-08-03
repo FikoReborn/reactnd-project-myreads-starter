@@ -2,6 +2,7 @@ import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import SearchPage from './SearchPage'
 import ListBooks from './ListBooks'
+import sortBy from 'sort-by'
 import './App.css'
 
 class BooksApp extends React.Component {
@@ -18,12 +19,14 @@ class BooksApp extends React.Component {
   }
   componentDidMount() {
     BooksAPI.getAll().then(books => {
+      books.sort(sortBy('authors'))
       this.setState({ books })
     })
   }
   moveShelf(book, shelf) {
     BooksAPI.update(book, shelf).then(() => {
       BooksAPI.getAll().then(books => {
+        books.sort(sortBy('authors'))
         this.setState({ books:books, results:books })
       })
     })
@@ -33,6 +36,7 @@ class BooksApp extends React.Component {
       const searchQuery = query.trim();
       BooksAPI.search(searchQuery).then(result => {
         this.checkShelf(result)
+        result.sort(sortBy('authors'))
         this.setState({ results: result })
       })
     } else if (this.state.results.error) {
