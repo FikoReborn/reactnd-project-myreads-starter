@@ -49,7 +49,7 @@ class BooksApp extends React.Component {
   }
 
   checkShelf(bookResults) {
-    bookResults.map(thisBook => {
+    bookResults.forEach(thisBook => {
       this.state.books.forEach(storedBook => {
         if (thisBook.id === storedBook.id) {
           thisBook.shelf = storedBook.shelf;
