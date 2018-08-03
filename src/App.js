@@ -29,8 +29,9 @@ class BooksApp extends React.Component {
     })
   }
   searchBooks(query) {
-    if (query.length > 0) {
-      BooksAPI.search(query.trim()).then(result => {
+    if (query.replace(/\s/g,"") !== "") {
+      const searchQuery = query.trim();
+      BooksAPI.search(searchQuery).then(result => {
         if (!result.error) this.setState({ results:result })
         else this.setState({results: []})
       })
