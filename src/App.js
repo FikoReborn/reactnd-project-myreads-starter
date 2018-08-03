@@ -35,12 +35,14 @@ class BooksApp extends React.Component {
     if (query.replace(/\s/g, "") !== "") {
       const searchQuery = query.trim();
       BooksAPI.search(searchQuery).then(result => {
-        this.checkShelf(result)
-        result.sort(sortBy('authors'))
-        this.setState({ results: result })
+        if (!result.error) {
+          this.checkShelf(result)
+          result.sort(sortBy('authors'))
+          this.setState({ results: result })
+        } else {
+          this.setState({results: []})
+        }
       })
-    } else if (this.state.results.error) {
-      this.setState({ results: [] })
     } else {
       this.setState({ results: [] })
     }
@@ -62,20 +64,20 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-          <Route exact path="/" render={() => (
-            <ListBooks
-              onMoveShelf={(book, shelf) => this.moveShelf(book, shelf)}
-              books={this.state.books}
-            />
-          )} />
-          <Route path="/search" render={({ location }) => (
-            <SearchPage
-              books={this.state.books}
-              results={this.state.results}
-              onSearch={(query) => this.searchBooks(query)}
-              onMoveShelf={(book, shelf) => this.moveShelf(book, shelf)}
-            />
-          )} />
+        <Route exact path="/" render={() => (
+          <ListBooks
+            onMoveShelf={(book, shelf) => this.moveShelf(book, shelf)}
+            books={this.state.books}
+          />
+        )} />
+        <Route path="/search" render={({ location }) => (
+          <SearchPage
+            books={this.state.books}
+            results={this.state.results}
+            onSearch={(query) => this.searchBooks(query)}
+            onMoveShelf={(book, shelf) => this.moveShelf(book, shelf)}
+          />
+        )} />
       </div>
     )
   }
