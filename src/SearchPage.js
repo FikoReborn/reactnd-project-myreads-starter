@@ -1,8 +1,16 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import './App.css'
 
 class SearchPage extends React.Component {
+  static PropTypes = {
+    results: PropTypes.array.isRequired,
+    onSearch: PropTypes.func.isRequired,
+    onMoveShelf: PropTypes.func.isRequired
+  }
   render() {
+    const results = this.props.results;
+    console.log(this.props)
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -22,15 +30,15 @@ class SearchPage extends React.Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {this.props.result.map((book) => (
-              <li key={book.id}>
+            {results.map((result) => (
+              <li key={result.id}>
                 <div className="book">
                   <div className="book-top">
-                  {book.imageLinks && (
-                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail}` }}></div>
-                  )}
+                    {result.imageLinks && (
+                      <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${result.imageLinks.thumbnail}` }}></div>
+                    )}
                     <div className="book-shelf-changer">
-                      <select value={book.shelf} onChange={(event) => this.props.onMoveShelf(book, event.target.value)}>
+                      <select value={result.shelf} onChange={(event) => this.props.onMoveShelf(result, event.target.value)}>
                         <option value="move" disabled>Move to...</option>
                         <option value="currentlyReading">Currently Reading</option>
                         <option value="wantToRead">Want to Read</option>
@@ -39,9 +47,9 @@ class SearchPage extends React.Component {
                       </select>
                     </div>
                   </div>
-                  <div className="book-title">{book.title}</div>
-                  {book.authors && (
-                    <div className="book-authors">{book.authors}</div>
+                  <div className="book-title">{result.title}</div>
+                  {result.authors && (
+                    <div className="book-authors">{result.authors}</div>
                   )}
                 </div>
               </li>
