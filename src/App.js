@@ -18,17 +18,22 @@ class BooksApp extends React.Component {
     results: []
   }
   componentDidMount() {
+    this.getBooks()
+  }
+
+  getBooks() {
     BooksAPI.getAll().then(books => {
-      books.sort(sortBy('authors'))
       this.setState({ books })
     })
   }
   moveShelf(book, shelf) {
     BooksAPI.update(book, shelf).then(() => {
-      BooksAPI.getAll().then(books => {
-        books.sort(sortBy('authors'))
-        this.setState({ books: books, results: books })
-      })
+      let newBooksData
+      (window.location.href.indexOf('search') > 0 ? newBooksData = this.state.results : newBooksData = this.state.books)
+      const bookIndex = newBooksData.indexOf(book);
+      newBooksData[bookIndex].shelf = shelf;
+      this.setState({ books: newBooksData })
+      this.getBooks()
     })
   }
   searchBooks(query) {
@@ -37,10 +42,9 @@ class BooksApp extends React.Component {
       BooksAPI.search(searchQuery).then(result => {
         if (!result.error) {
           this.checkShelf(result)
-          result.sort(sortBy('authors'))
           this.setState({ results: result })
         } else {
-          this.setState({results: []})
+          this.setState({ results: [] })
         }
       })
     } else {
