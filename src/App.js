@@ -26,30 +26,14 @@ class BooksApp extends React.Component {
       this.setState({ books })
     })
   }
-  moveShelf(book, shelf) {
+  moveShelf(book, shelf, allBooks) {
     BooksAPI.update(book, shelf).then(() => {
-      let newBooksData
-      (window.location.href.indexOf('search') > 0 ? newBooksData = this.state.results : newBooksData = this.state.books)
+      const newBooksData = allBooks;
       const bookIndex = newBooksData.indexOf(book);
       newBooksData[bookIndex].shelf = shelf;
       this.setState({ books: newBooksData })
       this.getBooks()
     })
-  }
-  searchBooks(query) {
-    if (query.replace(/\s/g, "") !== "") {
-      const searchQuery = query.trim();
-      BooksAPI.search(searchQuery).then(result => {
-        if (!result.error) {
-          this.checkShelf(result)
-          this.setState({ results: result })
-        } else {
-          this.setState({ results: [] })
-        }
-      })
-    } else {
-      this.setState({ results: [] })
-    }
   }
 
   checkShelf(bookResults) {
@@ -78,8 +62,9 @@ class BooksApp extends React.Component {
           <SearchPage
             books={this.state.books}
             results={this.state.results}
+            checkShelf={(book) => this.checkShelf(book)}
             onSearch={(query) => this.searchBooks(query)}
-            onMoveShelf={(book, shelf) => this.moveShelf(book, shelf)}
+            onMoveShelf={(book, shelf, allBooks) => this.moveShelf(book, shelf, allBooks)}
           />
         )} />
       </div>

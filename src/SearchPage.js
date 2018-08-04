@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import * as BooksAPI from './BooksAPI'
 import PropTypes from 'prop-types'
 import './App.css'
 
@@ -9,8 +10,31 @@ class SearchPage extends React.Component {
     onSearch: PropTypes.func.isRequired,
     onMoveShelf: PropTypes.func.isRequired
   }
+  state = {
+    results: []
+  }
+  componentWillUnmount() {
+    this.setState({ results: [] })
+  }
+
+  handleQuery(query) {
+    if (query.replace(/\s/g, "") !== "") {
+      const searchQuery = query.trim();
+      BooksAPI.search(searchQuery).then(result => {
+        if (!result.error) {
+          this.props.checkShelf(result)
+          this.setState({ results: result })
+        } else {
+          this.setState({ results: [] })
+        }
+      })
+    } else {
+      this.setState({ results: [] })
+    }
+  }
+  
   render() {
-    const results = this.props.results;
+    const results = this.state.results;
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -24,7 +48,7 @@ class SearchPage extends React.Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-            <input type="text" placeholder="Search by title or author" onChange={(e) => this.props.onSearch(e.target.value)} />
+            <input type="text" placeholder="Search by title or author" onChange={(e) => this.handleQuery(e.target.value)} />
 
           </div>
         </div>
@@ -38,7 +62,7 @@ class SearchPage extends React.Component {
                       <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${result.imageLinks.thumbnail}` }}></div>
                     )}
                     <div className="book-shelf-changer">
-                      <select value={result.shelf} onChange={(event) => this.props.onMoveShelf(result, event.target.value)}>
+                      <select value={result.shelf} onChange={(event) => this.props.onMoveShelf(result, event.target.value, this.state.results)}>
                         <option value="move" disabled>Move to...</option>
                         <option value="currentlyReading">Currently Reading</option>
                         <option value="wantToRead">Want to Read</option>
