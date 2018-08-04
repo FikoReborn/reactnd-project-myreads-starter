@@ -8,26 +8,22 @@ import './App.css'
 
 class BooksApp extends React.Component {
   state = {
-    books: [],
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    results: []
+    books: []
   }
   componentDidMount() {
+    // Get books on mounting
     this.getBooks()
   }
 
   getBooks() {
     BooksAPI.getAll().then(books => {
+      books.sort(sortBy('title'))
       this.setState({ books })
     })
   }
   moveShelf(book, shelf, allBooks) {
     BooksAPI.update(book, shelf).then(() => {
+      // Set shelf then update state, and finally get books
       const newBooksData = allBooks;
       const bookIndex = newBooksData.indexOf(book);
       newBooksData[bookIndex].shelf = shelf;
@@ -37,15 +33,15 @@ class BooksApp extends React.Component {
   }
 
   checkShelf(bookResults) {
+    // Check and update shelves on search
     bookResults.forEach(thisBook => {
       this.state.books.forEach(storedBook => {
         if (thisBook.id === storedBook.id) {
           thisBook.shelf = storedBook.shelf;
+        } else if (!thisBook.shelf) {
+          thisBook.shelf = 'none'
         }
       })
-      if (!thisBook.shelf) {
-        thisBook.shelf = 'none'
-      }
     })
   }
 
@@ -60,10 +56,7 @@ class BooksApp extends React.Component {
         )} />
         <Route path="/search" render={({ location }) => (
           <SearchPage
-            books={this.state.books}
-            results={this.state.results}
             checkShelf={(book) => this.checkShelf(book)}
-            onSearch={(query) => this.searchBooks(query)}
             onMoveShelf={(book, shelf, allBooks) => this.moveShelf(book, shelf, allBooks)}
           />
         )} />

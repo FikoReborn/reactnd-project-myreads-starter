@@ -2,27 +2,31 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import PropTypes from 'prop-types'
+import sortBy from 'sort-by'
 import './App.css'
 
 class SearchPage extends React.Component {
   static propTypes = {
-    results: PropTypes.array.isRequired,
-    onSearch: PropTypes.func.isRequired,
+    checkShelf: PropTypes.func.isRequired,
     onMoveShelf: PropTypes.func.isRequired
   }
   state = {
     results: []
   }
   componentWillUnmount() {
+    // Reset search results when unmounted
     this.setState({ results: [] })
   }
 
   handleQuery(query) {
+    // Run search if no empty string, otherwise clear results to prevent errors
     if (query.replace(/\s/g, "") !== "") {
       const searchQuery = query.trim();
       BooksAPI.search(searchQuery).then(result => {
+        // Set book shelves if no error, otherwise clear results to prevent errors
         if (!result.error) {
           this.props.checkShelf(result)
+          result.sort(sortBy('title'))
           this.setState({ results: result })
         } else {
           this.setState({ results: [] })
