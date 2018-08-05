@@ -50,7 +50,7 @@ class BooksApp extends React.Component {
       <div className="app">
         <Route exact path="/" render={() => (
           <ListBooks
-            onMoveShelf={(book, shelf) => this.moveShelf(book, shelf)}
+            onMoveShelf={(book, shelf, allBooks) => this.moveShelf(book, shelf, allBooks)}
             books={this.state.books}
           />
         )} />

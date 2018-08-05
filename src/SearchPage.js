@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import PropTypes from 'prop-types'
 import sortBy from 'sort-by'
+import Book from './Book'
 import './App.css'
 
 class SearchPage extends React.Component {
@@ -36,7 +37,7 @@ class SearchPage extends React.Component {
       this.setState({ results: [] })
     }
   }
-  
+
   render() {
     const results = this.state.results;
     return (
@@ -58,32 +59,16 @@ class SearchPage extends React.Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-          {results === [] && (
-            <div>No results found.</div>
-          )}
+            {results === [] && (
+              <div>No results found.</div>
+            )}
             {results.map((result) => (
-              <li key={result.id}>
-                <div className="book">
-                  <div className="book-top">
-                    {result.imageLinks && (
-                      <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${result.imageLinks.thumbnail}` }}></div>
-                    )}
-                    <div className="book-shelf-changer">
-                      <select value={result.shelf} onChange={(event) => this.props.onMoveShelf(result, event.target.value, this.state.results)}>
-                        <option value="move" disabled>Move to...</option>
-                        <option value="currentlyReading">Currently Reading</option>
-                        <option value="wantToRead">Want to Read</option>
-                        <option value="read">Read</option>
-                        <option value="none">None</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="book-title">{result.title}</div>
-                  {result.authors && (
-                    <div className="book-authors">{result.authors}</div>
-                  )}
-                </div>
-              </li>
+              <Book
+                key={result.id}
+                book={result}
+                books={results}
+                onMoveShelf={(book, shelf, allBooks) => this.props.onMoveShelf(book, shelf, allBooks)}
+              />
             ))}
           </ol>
         </div>
