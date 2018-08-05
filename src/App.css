@@ -49,13 +49,36 @@ body, .app {
   text-shadow: 2px 2px 5px #000;
   color: #fff;
   background-color: #000;
-  border-radius: 100%;
-  user-select: none;
-  cursor: pointer;
+  border-radius: 20px;
 }
 
-.bookshelf-title:hover {
+.bookshelf-button {
+  border-radius: 100%;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  letter-spacing: 10px;
+  text-transform: uppercase;
+}
+
+.bookshelf-button:hover {
   color: rgb(252, 52, 52);
+}
+
+.bookshelf-button:focus {
+  outline: none;
+}
+
+.depressed {
+  color: rgb(153, 153, 153);
+}
+
+.depressed:hover {
+  color: rgb(211, 211, 211);
 }
 
 .bookshelf-books {

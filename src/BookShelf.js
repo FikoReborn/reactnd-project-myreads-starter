@@ -5,7 +5,9 @@ import './App.css'
 class BookShelf extends React.Component {
     hideShelf(e) {
         const thisShelf = e.target.parentElement.nextElementSibling;
+        const thisText = e.target;
         thisShelf.classList.toggle('hide-shelf');
+        thisText.classList.toggle('depressed');
     }
     render() {
         const { books, shelf } = this.props;
