@@ -59,9 +59,6 @@ class SearchPage extends React.Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {results === [] && (
-              <div>No results found.</div>
-            )}
             {results.map((result) => (
               <Book
                 key={result.id}
