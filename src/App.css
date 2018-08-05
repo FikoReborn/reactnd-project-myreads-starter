@@ -50,9 +50,20 @@ body, .app {
   color: #fff;
   background-color: #000;
   border-radius: 100%;
+  user-select: none;
+  cursor: pointer;
 }
+
+.bookshelf-title:hover {
+  color: rgb(252, 52, 52);
+}
+
 .bookshelf-books {
   text-align: center;
+}
+
+.hide-shelf {
+  display: none;
 }
 
 .open-search {

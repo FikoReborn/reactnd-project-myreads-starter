@@ -4,6 +4,18 @@ import Book from './Book'
 import './App.css'
 
 class ListBooks extends React.Component {
+    state = {
+        reading: true,
+        currentlyReading: true,
+        wantToRead: true,
+        read: true
+    }
+
+    hideShelf(e) {
+        const thisShelf = e.target.nextElementSibling;
+        thisShelf.classList.toggle('hide-shelf');
+    }
+
     render() {
         const books = this.props.books
         const shelves = [
@@ -20,6 +32,7 @@ class ListBooks extends React.Component {
                 name: 'Read'
             }
         ]
+
         return (
             <div className="list-books">
                 <div className="list-books-title">
@@ -29,8 +42,8 @@ class ListBooks extends React.Component {
                     <div>
                         {shelves.map((shelf) => (
                             <div className="bookshelf" key={shelf.id}>
-                                <h2 className="bookshelf-title">{shelf.name}</h2>
-                                <div className="bookshelf-books">
+                                <h2 className="bookshelf-title" onClick={(e) => this.hideShelf(e)}>{shelf.name}</h2>
+                                <div className="bookshelf-books" id={shelf.id}>
                                     <ol className="books-grid">
                                         {books.filter(book => book.shelf === shelf.id).map((book) => (
                                             <Book
