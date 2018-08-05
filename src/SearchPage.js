@@ -38,6 +38,14 @@ class SearchPage extends React.Component {
     }
   }
 
+  clearResults(val) {
+    // Clear results if search field is empty
+    // Prevents issue when backspace is held down to clear query
+    if (val === "") {
+      this.setState({ results: [] })
+    }
+  }
+
   render() {
     const results = this.state.results;
     return (
@@ -53,7 +61,7 @@ class SearchPage extends React.Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-            <input type="text" placeholder="Search by title or author" onChange={(e) => this.handleQuery(e.target.value)} />
+            <input type="text" placeholder="Search by title or author" onChange={(e) => this.handleQuery(e.target.value)} onKeyDown={(e) => this.clearResults(e.target.value)} />
 
           </div>
         </div>
