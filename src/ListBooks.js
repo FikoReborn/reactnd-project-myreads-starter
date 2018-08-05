@@ -27,7 +27,7 @@ class ListBooks extends React.Component {
                 name: 'Read'
             }
         ]
-
+        console.log(books);
         return (
             <div className="list-books">
                 <div className="list-books-title">
