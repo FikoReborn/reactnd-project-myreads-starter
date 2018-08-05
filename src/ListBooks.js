@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Book from './Book'
+import BookShelf from './BookShelf'
 import './App.css'
 
 class ListBooks extends React.Component {
@@ -9,11 +9,6 @@ class ListBooks extends React.Component {
         currentlyReading: true,
         wantToRead: true,
         read: true
-    }
-
-    hideShelf(e) {
-        const thisShelf = e.target.nextElementSibling;
-        thisShelf.classList.toggle('hide-shelf');
     }
 
     render() {
@@ -41,23 +36,13 @@ class ListBooks extends React.Component {
                 <div className="list-books-content">
                     <div>
                         {shelves.map((shelf) => (
-                            <div className="bookshelf" key={shelf.id}>
-                                <h2 className="bookshelf-title" onClick={(e) => this.hideShelf(e)}>{shelf.name}</h2>
-                                <div className="bookshelf-books" id={shelf.id}>
-                                    <ol className="books-grid">
-                                        {books.filter(book => book.shelf === shelf.id).map((book) => (
-                                            <Book
-                                                key={book.id}
-                                                book={book}
-                                                books={books}
-                                                onMoveShelf={(book, shelf, allBooks) => this.props.onMoveShelf(book, shelf, allBooks)}
-                                            />
-                                        ))}
-                                    </ol>
-                                </div>
-                            </div>
+                            <BookShelf
+                                key={shelf.id}
+                                shelf={shelf}
+                                books={books}
+                                onMoveShelf={(book, shelf, allBooks) => this.props.onMoveShelf(book, shelf, allBooks)}
+                            />
                         ))}
-
                     </div>
                 </div>
                 <div className="open-search">
