@@ -12,10 +12,12 @@ class SearchPage extends React.Component {
     moveShelf: PropTypes.func.isRequired
   }
   state = {
-    results: []
+    results: [],
+    error: false
   }
 
   handleQuery(query) {
+    this.setState({ error: false })
     // Run search if no empty string, otherwise clear results to prevent errors
     if (query.replace(/\s/g, "") !== "") {
       const searchQuery = query.trim();
@@ -27,6 +29,7 @@ class SearchPage extends React.Component {
           this.setState({ results: result })
         } else {
           this.setState({ results: [] })
+          this.setState({ error: true })
         }
       })
     } else {
@@ -58,11 +61,16 @@ class SearchPage extends React.Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-            <input type="text" placeholder="Search by title or author" onChange={(e) => this.handleQuery(e.target.value)} onKeyDown={(e) => this.clearResults(e.target.value)} />
+            <input type="text" placeholder="Search by title or author" id="search-input" onChange={(e) => this.handleQuery(e.target.value)} onKeyDown={(e) => this.clearResults(e.target.value)} />
 
           </div>
         </div>
         <div className="search-books-results">
+          {this.state.error && (
+            <div className="no-results">
+              <p>Sorry, no results found.</p>
+            </div>
+          )}
           <ol className="books-grid">
             {results.map((result) => (
               <Book
