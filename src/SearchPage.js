@@ -22,7 +22,7 @@ class SearchPage extends React.Component {
     if (query.replace(/\s/g, "") !== "") {
       const searchQuery = query.trim();
       BooksAPI.search(searchQuery).then(result => {
-        // Set book shelves if no error, otherwise clear results to prevent errors
+        // Set book shelves if no error, otherwise clear results and set error state
         if (!result.error) {
           this.props.checkShelf(result)
           result.sort(sortBy('title'))

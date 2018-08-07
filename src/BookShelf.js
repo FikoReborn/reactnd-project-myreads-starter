@@ -4,6 +4,7 @@ import './App.css'
 
 class BookShelf extends React.Component {
     hideShelf(e) {
+        // Hide books and change font of button
         const thisShelf = e.target.parentElement.nextElementSibling;
         const thisText = e.target;
         thisShelf.classList.toggle('hide-shelf');
