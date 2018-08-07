@@ -21,7 +21,7 @@ class BooksApp extends React.Component {
       this.setState({ books })
     })
   }
-  moveShelf(book, shelf, allBooks) {
+  moveShelf = (book, shelf, allBooks) => {
     BooksAPI.update(book, shelf).then(() => {
       // Set shelf then update state, and finally get books
       const newBooksData = allBooks;
@@ -32,7 +32,7 @@ class BooksApp extends React.Component {
     })
   }
 
-  checkShelf(bookResults) {
+  checkShelf = (bookResults) => {
     // Check and update shelves on search
     bookResults.forEach(thisBook => {
       this.state.books.forEach(storedBook => {
@@ -50,14 +50,14 @@ class BooksApp extends React.Component {
       <div className="app">
         <Route exact path="/" render={() => (
           <ListBooks
-            onMoveShelf={(book, shelf, allBooks) => this.moveShelf(book, shelf, allBooks)}
+            moveShelf={this.moveShelf}
             books={this.state.books}
           />
         )} />
         <Route path="/search" render={({ location }) => (
           <SearchPage
-            checkShelf={(book) => this.checkShelf(book)}
-            onMoveShelf={(book, shelf, allBooks) => this.moveShelf(book, shelf, allBooks)}
+            checkShelf={this.checkShelf}
+            moveShelf={this.moveShelf}
           />
         )} />
       </div>

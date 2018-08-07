@@ -14,10 +14,6 @@ class SearchPage extends React.Component {
   state = {
     results: []
   }
-  componentWillUnmount() {
-    // Reset search results when unmounted
-    this.setState({ results: [] })
-  }
 
   handleQuery(query) {
     // Run search if no empty string, otherwise clear results to prevent errors
@@ -48,6 +44,7 @@ class SearchPage extends React.Component {
 
   render() {
     const results = this.state.results;
+    const { checkShelf, moveShelf } = this.props;
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -72,7 +69,7 @@ class SearchPage extends React.Component {
                 key={result.id}
                 book={result}
                 books={results}
-                onMoveShelf={(book, shelf, allBooks) => this.props.onMoveShelf(book, shelf, allBooks)}
+                moveShelf={moveShelf}
               />
             ))}
           </ol>

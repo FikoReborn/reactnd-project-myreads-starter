@@ -10,7 +10,7 @@ class BookShelf extends React.Component {
         thisText.classList.toggle('depressed');
     }
     render() {
-        const { books, shelf } = this.props;
+        const { books, shelf, moveShelf } = this.props;
         return (
             <div className="bookshelf" key={shelf.id}>
                 <h2 className="bookshelf-title"><button className="bookshelf-button" onClick={(e) => this.hideShelf(e)}>{shelf.name}</button></h2>
@@ -21,7 +21,7 @@ class BookShelf extends React.Component {
                                 key={book.id}
                                 book={book}
                                 books={books}
-                                onMoveShelf={(book, shelf, allBooks) => this.props.onMoveShelf(book, shelf, allBooks)}
+                                moveShelf={moveShelf}
                             />
                         ))}
                     </ol>

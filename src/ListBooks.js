@@ -5,14 +5,13 @@ import './App.css'
 
 class ListBooks extends React.Component {
     state = {
-        reading: true,
         currentlyReading: true,
         wantToRead: true,
         read: true
     }
 
     render() {
-        const books = this.props.books
+        const { books, moveShelf } = this.props;
         const shelves = [
             {
                 id: 'currentlyReading',
@@ -40,7 +39,7 @@ class ListBooks extends React.Component {
                                 key={shelf.id}
                                 shelf={shelf}
                                 books={books}
-                                onMoveShelf={(book, shelf, allBooks) => this.props.onMoveShelf(book, shelf, allBooks)}
+                                moveShelf={moveShelf}
                             />
                         ))}
                     </div>
