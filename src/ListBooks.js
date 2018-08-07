@@ -1,9 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import BookShelf from './BookShelf'
 import './App.css'
 
 class ListBooks extends React.Component {
+    static propTypes = {
+        books: PropTypes.array.isRequired,
+        moveShelf: PropTypes.func.isRequired
+    }
+
     state = {
         currentlyReading: true,
         wantToRead: true,

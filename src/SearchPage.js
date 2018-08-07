@@ -9,7 +9,7 @@ import './App.css'
 class SearchPage extends React.Component {
   static propTypes = {
     checkShelf: PropTypes.func.isRequired,
-    onMoveShelf: PropTypes.func.isRequired
+    moveShelf: PropTypes.func.isRequired
   }
   state = {
     results: []
